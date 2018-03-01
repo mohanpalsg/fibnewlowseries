@@ -18,6 +18,7 @@
                      
                      
                      pricedifflow : $("#lowvalue").val(),
+                     chartinterval : $( "#PeriodSelect option:selected" ).val(),
 					 pricediffhigh : $("#highvalue").val()
                   
                    
@@ -113,7 +114,32 @@
                             </div>
 							 <div class="panel-body">
 							 
-							 
+							 <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <p>Candle Interval</p>
+                            </div>
+                             <div class="panel-body">
+                             
+ <select id="PeriodSelect" onchange="OthertechFormChange()" >
+ 
+
+ <option value="900"  <c:if test="${Minselect eq 900}">
+selected
+</c:if>>Monthly</option>
+
+ <option value="600"  <c:if test="${Minselect eq 600}">
+selected
+</c:if>>Weekly</option>
+
+<option value="60"  <c:if test="${Minselect eq 300}">
+selected
+</c:if>>Daily</option>
+
+</select>
+
+</div>
+</div>
+       
 						
 						 
 							 <div class="panel panel-info">

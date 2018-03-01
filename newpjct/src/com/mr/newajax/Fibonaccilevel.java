@@ -53,7 +53,11 @@ public class Fibonaccilevel extends HttpServlet {
 		String lowdiff = (String) session.getAttribute("pricedifflowselected");
 		if (lowdiff == null || lowdiff.equals(""))
 			lowdiff = "0";
-		String tablename="fibdata";
+		String duration = (String) session.getAttribute("chartintervalselected");
+		
+		String tablename="fibdata"+duration;
+		
+		String tablename2="fibdata_v2"+duration;
 		
 		HashMap <String,FibonaccirenderedObject> output = new HashMap <String,FibonaccirenderedObject>();
 		
@@ -61,6 +65,7 @@ public class Fibonaccilevel extends HttpServlet {
 		Connection conn = dataconn.getconn();
 
 		HashMap <String,Fibondata> nsetabdata = gettabledata(conn,tablename);
+		HashMap <String,Fibondata> nsetabdata_v2 = gettabledata(conn,tablename2);
 		
 		
 		dataconn.closeconn();
@@ -72,7 +77,7 @@ public class Fibonaccilevel extends HttpServlet {
 		while (it.hasNext()) {
 		
 			 String stocksymbol = (String) it.next();
-		        if(currentprice.containsKey(stocksymbol) && nsetabdata.containsKey(stocksymbol))
+		        if(currentprice.containsKey(stocksymbol) && nsetabdata.containsKey(stocksymbol)  && nsetabdata_v2.containsKey(stocksymbol))
 		        {
 		        	
 		        	FibonaccirenderedObject ro = getFibonaccirenderedObject(currentprice.get(stocksymbol),nsetabdata.get(stocksymbol),lowdiff,highdiff,session,stocksymbol);
@@ -80,11 +85,22 @@ public class Fibonaccilevel extends HttpServlet {
 		        	{
 		        		output.put(stocksymbol, ro);
 		        	}
+		        	
+		        	if (session.getAttribute("show2").equals("Y") )
+		        	{
+		        	ro = getFibonaccirenderedObject(currentprice.get(stocksymbol),nsetabdata_v2.get(stocksymbol),lowdiff,highdiff,session,stocksymbol);
+		        	if (ro!= null)
+		        	{
+		        		output.put(stocksymbol+"v2", ro);
+		        	}
+		        	}
+		        	
 		        }
 			
 		        request.setAttribute("stocklist", output);
 		        request.setAttribute("highdiff",highdiff );
 				request.setAttribute("lowdiff", lowdiff);
+				request.setAttribute("Minselect", duration);
 				
 			
 			
@@ -206,6 +222,7 @@ HttpSession session = request.getSession(false);
 		
 		session.setAttribute("pricedifflowselected", request.getParameter("pricedifflow"));
 		session.setAttribute("pricediffhighselected",request.getParameter("pricediffhigh")) ;
+		session.setAttribute("chartintervalselected",request.getParameter("chartinterval")) ;
 		
 		
 	

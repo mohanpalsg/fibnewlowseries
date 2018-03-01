@@ -3,18 +3,17 @@ mysql> create table defaultsetting (setting varchar(20), value varchar(20));
 mysql> insert into defaultsetting values ('DF_PD','900');
 
 
-mysql> insert into defaultsetting values ('avg1','15');
+ create table specificsetting (duration varchar(5),length varchar(4),avg1 varchar(4),avg2 varchar(4),adjustment varchar(6));
 
 
-mysql> insert into defaultsetting values ('avg2','20');
-
-
-mysql> insert into defaultsetting values ('pdlength','20');
-
-
-mysql> insert into defaultsetting values ('adddiff','-0.1');
+mysql> insert into specificsetting values ("900","20","10","20","-0.1");
 Query OK, 1 row affected (0.12 sec)
 
+mysql> insert into specificsetting values ("600v2","75","75","75","-0.1");
+Query OK, 1 row affected (0.14 sec)
+
+mysql> insert into specificsetting values ("300v2","100","200","300","-0.1");
+Query OK, 1 row affected (0.37 sec)
 
 create table nse200 (stocksymbol VARCHAR(20));
 create table nse500 (stocksymbol VARCHAR(20));
@@ -741,7 +740,10 @@ create table nse600min( stocksymbol varchar(20),stochk float(5,2),stochd float(5
 	  
 	 
  
- create table fibdata(stocksymbol varchar(20),stochk float(5,2),stochd float(5,2),willr float(5,2),rsi float(5,2),bh float(19,2),bh1 float(19,2),bh2 float(19,2),bh3 float(19,2),bh4 float(19,2),mid1 float(19,2),mid2 float(19,2),mid3 float(19,2),mid4 float(19,2),bl float(19,2),bl1 float(19,2),bl2 float(19,2),sma200 float(19,2))
+ create table fibdata_v2900(stocksymbol varchar(20),stochk float(5,2),stochd float(5,2),willr float(5,2),rsi float(5,2),bh float(19,2),bh1 float(19,2),bh2 float(19,2),bh3 float(19,2),bh4 float(19,2),mid1 float(19,2),mid2 float(19,2),mid3 float(19,2),mid4 float(19,2),bl float(19,2),bl1 float(19,2),bl2 float(19,2),sma200 float(19,2))
  
  
+  create table fibdata_v2600(stocksymbol varchar(20),stochk float(5,2),stochd float(5,2),willr float(5,2),rsi float(5,2),bh float(19,2),bh1 float(19,2),bh2 float(19,2),bh3 float(19,2),bh4 float(19,2),mid1 float(19,2),mid2 float(19,2),mid3 float(19,2),mid4 float(19,2),bl float(19,2),bl1 float(19,2),bl2 float(19,2),sma200 float(19,2))
+ 
+  create table fibdata_v2300(stocksymbol varchar(20),stochk float(5,2),stochd float(5,2),willr float(5,2),rsi float(5,2),bh float(19,2),bh1 float(19,2),bh2 float(19,2),bh3 float(19,2),bh4 float(19,2),mid1 float(19,2),mid2 float(19,2),mid3 float(19,2),mid4 float(19,2),bl float(19,2),bl1 float(19,2),bl2 float(19,2),sma200 float(19,2))
  

@@ -23,6 +23,7 @@ import javax.servlet.http.HttpSession;
 
 import com.mr.datainsert.Dataconn;
 import com.mr.newdata.Pivotobject;
+import com.mr.newdata.Settingobj;
 import com.mysql.jdbc.PreparedStatement;
 
 
@@ -54,11 +55,8 @@ public class Loadservlet extends HttpServlet {
 		session.setAttribute("nse200", getnse200fromdb());
 		session.setAttribute("nse500", getnse500());
 		session.setAttribute("chartintervalselected", getchartinterval());
-		session.setAttribute("avg1", getAvg1());
-		
-		session.setAttribute("avg2",getAvg2());
-		session.setAttribute("pdlength",getpd());
-		session.setAttribute("adddiff", getadddiff());
+		session.setAttribute("setting", getsetting());
+		session.setAttribute("show2", getshow2());
 		
 		
 		//session.setAttribute("weekpivot", getweekpivot());
@@ -66,6 +64,79 @@ public class Loadservlet extends HttpServlet {
 		
 	request.getRequestDispatcher("./LoginHome/dashboardhome.jsp").forward(request, response);
 		//request.getRequestDispatcher("angtest.html").forward(request, response);
+	}
+
+	private String getshow2() {
+		// TODO Auto-generated method stub
+		Dataconn dataconn =new Dataconn();
+		Connection conn = dataconn.getconn();
+		String val  =new String();
+		Statement stmt;
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("select value from defaultsetting where setting=\'SHOW_V2\'");
+			while (rs.next()) {
+
+				val=(rs.getString(1));
+			}
+			rs.close();
+			stmt.close();
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return val;
+	}
+
+	private Object getsetting() {
+		// TODO Auto-generated method stub
+		HashMap<String,Settingobj> pivot = new HashMap <String,Settingobj> ();
+		Dataconn dataconn = new Dataconn();
+		Connection conn = dataconn.getconn();
+		java.sql.PreparedStatement ps =null;
+		ResultSet rs = null;
+		try {
+			ps = conn.prepareStatement("select duration,length,avg1,avg2,adjustment from specificSetting");
+			 rs = ps.executeQuery();
+			while (rs.next())
+			{
+				Settingobj po = new Settingobj();
+				po.setDuration(rs.getString(1));
+				po.setBarlength(rs.getString(2));
+				po.setAvg1(rs.getString(3));
+				po.setAvg2(rs.getString(4));
+				po.setAdjustment(rs.getString(5));
+				
+				
+				pivot.put(po.getDuration(), po);
+				
+			}
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			try {
+					ps.close();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			e.printStackTrace();
+		}
+		try {
+			rs.close();
+			ps.close();
+			dataconn.closeconn();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		return pivot;
+		
 	}
 
 	private Object getadddiff() {

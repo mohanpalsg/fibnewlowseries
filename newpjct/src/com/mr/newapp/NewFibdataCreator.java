@@ -39,8 +39,9 @@ public class NewFibdataCreator implements java.lang.Runnable{
 	private int interval;
 	private String pd;
 	private String actualinterval;
+	private String table_name;
 	private String adddiff;
-	public NewFibdataCreator(String duration,String avg1,String avg2,String periodlength, String adddiff)
+	public NewFibdataCreator(String duration,String avg1,String avg2,String periodlength, String adddiff,String version)
 	{
 	this.usemonth="N";
 	this.duration = duration;
@@ -50,6 +51,10 @@ public class NewFibdataCreator implements java.lang.Runnable{
     this.pd=periodlength;
     this.actualinterval=this.duration;
     this.adddiff=adddiff;
+    if (version.equals("v2"))
+    	this.table_name = "fibdata_v2"+this.duration;
+    else
+    	this.table_name= "fibdata"+this.duration;
 	}
 	
 	public void run() {
@@ -59,8 +64,8 @@ public class NewFibdataCreator implements java.lang.Runnable{
 		Dataconn dataconn =new Dataconn();
 		Connection conn = dataconn.getconn();
 		PreparedStatement stmt = null;
-		String updatestatement = "update fibdata set stochk=?,stochd=?,WillR=?,rsi=?,bh=?,bh1=?,bh2=?,bh3=?,bh4=?,mid1=?,mid2=?,mid3=?,mid4=?,bl=?,bl1=?,bl2=?,sma200=? where stocksymbol=?";		
-		String insertstatement = "insert into fibdata (stochk,stochd,willr,rsi,bh,bh1,bh2,bh3,bh4,mid1,mid2,mid3,mid4,bl,bl1,bl2,stocksymbol,sma200) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		String updatestatement = "update "+this.table_name+" set stochk=?,stochd=?,WillR=?,rsi=?,bh=?,bh1=?,bh2=?,bh3=?,bh4=?,mid1=?,mid2=?,mid3=?,mid4=?,bl=?,bl1=?,bl2=?,sma200=? where stocksymbol=?";		
+		String insertstatement = "insert into "+this.table_name+" (stochk,stochd,willr,rsi,bh,bh1,bh2,bh3,bh4,mid1,mid2,mid3,mid4,bl,bl1,bl2,stocksymbol,sma200) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 
 while (it.hasNext()) {
@@ -272,7 +277,7 @@ dataconn.closeconn();
 		if(this.interval/60 == 300)
 			tdlink = new URL("https://finance.google.com/finance/getprices?q="+stocksymbol+"&x=NSE&p=5Y&f=d,o,h,l,c,v");
 		if(this.interval/60 == 600)
-			tdlink = new URL("https://finance.google.com/finance/getprices?q="+stocksymbol+"&x=NSE&p=5Y&f=d,o,h,l,c,v");
+			tdlink = new URL("https://finance.google.com/finance/getprices?q="+stocksymbol+"&x=NSE&p=15Y&f=d,o,h,l,c,v");
 		if(this.interval/60 == 900)
 			tdlink = new URL("https://finance.google.com/finance/getprices?q="+stocksymbol+"&x=NSE&p=15Y&f=d,o,h,l,c,v");
 		
